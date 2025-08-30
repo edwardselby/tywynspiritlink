@@ -6,7 +6,7 @@ services:
     container_name: mautic
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "80:80"
     volumes:
       - mautic_data:/var/www/html
       - ./config/local.php:/var/www/html/app/config/local.php
