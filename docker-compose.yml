@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  mautic:
+    image: mautic/mautic:v4-apache
+    container_name: mautic
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - mautic_data:/var/www/html
+      - ./config/local.php:/var/www/html/app/config/local.php
+    environment:
+      - MAUTIC_DB_HOST=mysql
+      - MAUTIC_DB_USER=${MYSQL_USER}
+      - MAUTIC_DB_PASSWORD=${MYSQL_PASSWORD}
+      - MAUTIC_DB_NAME=${MYSQL_DATABASE}
+      - MAUTIC_RUN_CRON_JOBS=true
+      - MAUTIC_TRUSTED_PROXIES=["0.0.0.0/0"]
+      - PHP_MEMORY_LIMIT=512M
+      - PHP_MAX_UPLOAD=128M
+      - PHP_MAX_EXECUTION_TIME=300
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - mautic_net
+
+  mysql:
+    image: mysql:8.0
+    container_name: mautic_mysql
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./config/mysql.cnf:/etc/mysql/conf.d/mautic.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - mautic_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: mautic_redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    networks:
+      - mautic_net
+
+networks:
+  mautic_net:
+    driver: bridge
+
+volumes:
+  mautic_data:
+    driver: local
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local

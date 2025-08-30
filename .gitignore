@@ -1,0 +1,43 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Docker volumes and data
+data/
+logs/
+mysql_data/
+mautic_data/
+redis_data/
+
+# Mautic specific
+media/
+var/cache/
+var/logs/
+var/spool/
+var/tmp/
+
+# Backup files
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+backup/
+backups/
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+tmp/
+temp/
