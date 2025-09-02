@@ -1,6 +1,6 @@
-# Tywyn Spirit Link - Mautic Marketing Platform
+# Tywyn Spirit Link - Spiritualist Church Community Platform
 
-Self-hosted Mautic marketing automation platform for Tywyn Spirit Link. Built with Docker for easy deployment and scaling.
+Self-hosted Mautic marketing automation platform for Tywyn Spirit Link Spiritualist Church Community. Built with Docker for easy deployment and scaling, supporting our mission to provide a welcoming place of worship based on spiritualist church beliefs.
 
 ## Features
 
@@ -10,6 +10,8 @@ Self-hosted Mautic marketing automation platform for Tywyn Spirit Link. Built wi
 - 💾 Redis caching for performance
 - 🔐 MySQL 8.0 database with optimized configuration
 - 📊 Landing page builder and contact management
+- 🏛️ Pre-designed spiritualist church landing page templates
+- 🎯 Conversion-optimized responsive design
 
 ## Requirements
 
@@ -85,17 +87,90 @@ Copy `.env.example` to `.env` and configure:
    docker-compose up -d
    ```
 
-2. **Cloudflare Configuration:**
-   - Point tywynspiritlink.com A record to droplet IP
-   - Enable "Full" SSL mode
-   - Enable proxy (orange cloud icon)
+2. **Cloudflare DNS Configuration:**
+   - Log into Cloudflare Dashboard (https://dash.cloudflare.com)
+   - Select your domain `tywynspiritlink.com`
+   - Go to DNS > Records
+   - Create A record:
+     ```
+     Type: A
+     Name: @ (for root domain)
+     IPv4 address: [Your DigitalOcean Reserved IP]
+     Proxy status: Proxied (orange cloud - ENABLED)
+     TTL: Auto
+     ```
+   - Optional: Add WWW record:
+     ```
+     Type: A
+     Name: www
+     IPv4 address: [Your DigitalOcean Reserved IP]
+     Proxy status: Proxied (orange cloud - ENABLED)
+     TTL: Auto
+     ```
 
-3. **Update .env for production:**
+3. **Cloudflare SSL Configuration:**
+   - Go to SSL/TLS tab in Cloudflare
+   - Set encryption mode to "Full"
+   - Enable "Always Use HTTPS"
+   - Verify proxy is enabled (orange cloud icon)
+
+4. **Update .env for production:**
    ```bash
    MAUTIC_SITE_URL=https://tywynspiritlink.com
    MAUTIC_PORT=80
    # Add strong passwords and SES credentials
    ```
+
+## Landing Page Templates
+
+Pre-designed HTML templates are available in `assets/landing-pages/`:
+
+### **Spiritualist Church Landing Page**
+- **File**: `assets/landing-pages/spiritualist-church-landing.html`
+- **Purpose**: Main community welcome page for Tywyn Spirit Link
+- **Features**: 
+  - Minimalistic, church-focused design
+  - Mobile-responsive layout
+  - Contact form integration ready
+  - Mission statement and community values
+  - Professional non-profit presentation
+
+### **Using Landing Page Templates**
+
+1. **Copy HTML content** from template file
+2. **Create new landing page** in Mautic (Channels → Landing Pages → New)
+3. **Switch to code view** in Mautic editor
+4. **Paste template HTML** and save
+5. **Add Mautic forms** in designated placeholder areas
+6. **Publish** and test
+
+## Domain Redirection Setup
+
+### **Redirect Root Domain to Landing Page**
+
+**Option 1: Mautic Root URL Redirect (Recommended)**
+1. **Create your landing page** using template above and publish it
+2. **Get the landing page URL** (e.g., `https://tywynspiritlink.com/spiritualist-church`)
+3. **Go to Mautic Settings** → Configuration → System Settings
+4. **Set "Mautic's root URL"** to your landing page URL
+5. **Save configuration** - Root domain will now redirect to your landing page instead of login screen
+
+*This is a security best practice to prevent exposing the Mautic login screen to casual visitors*
+
+**Option 2: Cloudflare Page Rules**
+1. **Go to Cloudflare Dashboard** → Your domain → Page Rules
+2. **Create Page Rule**:
+   - URL Pattern: `tywynspiritlink.com/*`
+   - Setting: Forwarding URL (301 redirect)
+   - Destination: `https://tywynspiritlink.com/your-landing-page-url`
+3. **Save and Deploy**
+
+**Option 3: Apache .htaccess (Advanced)**
+```apache
+# Add to Mautic's .htaccess file
+RewriteEngine On
+RewriteRule ^$ /s/your-landing-page-alias [R=301,L]
+```
 
 ## Container Architecture
 

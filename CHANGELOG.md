@@ -14,6 +14,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security
 
+## [1.1.0] - 2025-09-02
+
+### Added
+- Pre-designed spiritualist church landing page template (`assets/landing-pages/spiritualist-church-landing.html`)
+- Minimalistic, mobile-responsive church community design
+- Ready-to-use HTML template with Mautic form integration placeholders
+- Domain redirection documentation for root domain to landing page setup
+- Three methods for domain redirection (Mautic built-in, Cloudflare, Apache)
+- Comprehensive landing page template documentation in README
+- Professional non-profit footer with association status
+
+### Changed
+- Updated project branding from generic marketing platform to "Spiritualist Church Community Platform"
+- Refined README to reflect spiritualist church mission and community focus
+- Enhanced features list to include landing page templates and conversion optimization
+- Updated configuration documentation with landing page deployment instructions
+
 ## [1.0.0] - 2025-09-02
 
 ### Added
