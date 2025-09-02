@@ -6,17 +6,18 @@ services:
     container_name: mautic
     restart: unless-stopped
     ports:
-      - "80:80"
+      # For local development use 8080:80
+      # For production with Cloudflare use 80:80
+      - "${MAUTIC_PORT:-8080}:80"
     volumes:
       - mautic_data:/var/www/html
-      - ./config/local.php:/var/www/html/app/config/local.php
     environment:
       - MAUTIC_DB_HOST=mysql
       - MAUTIC_DB_USER=${MYSQL_USER}
       - MAUTIC_DB_PASSWORD=${MYSQL_PASSWORD}
       - MAUTIC_DB_NAME=${MYSQL_DATABASE}
       - MAUTIC_RUN_CRON_JOBS=true
-      - MAUTIC_TRUSTED_PROXIES=["0.0.0.0/0"]
+      - MAUTIC_TRUSTED_PROXIES=["0.0.0.0/0"]  # Allows Cloudflare proxy
       - PHP_MEMORY_LIMIT=512M
       - PHP_MAX_UPLOAD=128M
       - PHP_MAX_EXECUTION_TIME=300
@@ -51,6 +52,7 @@ services:
       - redis_data:/data
     networks:
       - mautic_net
+
 
 networks:
   mautic_net:
