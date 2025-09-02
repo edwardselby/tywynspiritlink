@@ -1,6 +1,8 @@
 services:
   mautic:
-    image: mautic/mautic:v4-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mautic
     restart: unless-stopped
     ports:

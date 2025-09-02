@@ -14,6 +14,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security
 
+## [1.2.0] - 2025-09-02
+
+### Added
+- Automated cron job system for Mautic background tasks
+- Custom Dockerfile extending Mautic image with cron support
+- Entrypoint script that automatically configures cron jobs on container startup
+- Complete cron job schedule for all essential Mautic operations:
+  - Segment updates (every 5 minutes)
+  - Campaign processing (every 5 minutes)
+  - Email queue processing (every 2 minutes)
+  - Import processing (every 5 minutes)
+  - Webhook processing (every 5 minutes)
+  - Maintenance cleanup (daily)
+  - GeoIP database updates (weekly)
+- Amazon SES API configuration support for SMTP-blocked environments
+- Updated .env.example with SES API and SMTP configuration documentation
+- Production-ready cron setup for DigitalOcean deployment
+
+### Changed
+- Docker Compose now builds from custom Dockerfile instead of using base Mautic image
+- Enhanced email configuration documentation for both SES API and SMTP methods
+- Improved container architecture with integrated background task processing
+
+### Removed
+- Unused cron container approach files (simplified to single-container solution)
+
 ## [1.1.0] - 2025-09-02
 
 ### Added

@@ -1,0 +1,31 @@
+# Mautic Cron Jobs Configuration
+# These jobs should run inside the Mautic container
+# For production, add these to the host system's crontab or use a cron container
+
+# Segments - Update contact segments every 5 minutes
+*/5 * * * * www-data php /var/www/html/bin/console mautic:segments:update --no-interaction
+
+# Campaigns - Process campaign events every 5 minutes
+*/5 * * * * www-data php /var/www/html/bin/console mautic:campaigns:rebuild --no-interaction
+*/5 * * * * www-data php /var/www/html/bin/console mautic:campaigns:trigger --no-interaction
+
+# Emails - Process email queue every 2 minutes
+*/2 * * * * www-data php /var/www/html/bin/console mautic:emails:send --no-interaction
+
+# Import - Process imports every 5 minutes
+*/5 * * * * www-data php /var/www/html/bin/console mautic:import --no-interaction
+
+# Webhooks - Process webhooks every 5 minutes
+*/5 * * * * www-data php /var/www/html/bin/console mautic:webhooks:process --no-interaction
+
+# Broadcasts - Send scheduled broadcasts every 5 minutes
+*/5 * * * * www-data php /var/www/html/bin/console mautic:broadcasts:send --no-interaction
+
+# Reports - Process scheduled reports every 5 minutes
+*/5 * * * * www-data php /var/www/html/bin/console mautic:reports:scheduler --no-interaction
+
+# Maintenance - Clean up old data (run daily at 2 AM)
+0 2 * * * www-data php /var/www/html/bin/console mautic:maintenance:cleanup --days-old=365 --no-interaction
+
+# Update MaxMind GeoIP database (weekly)
+0 3 * * 1 www-data php /var/www/html/bin/console mautic:iplookup:download --no-interaction
